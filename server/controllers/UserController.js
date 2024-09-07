@@ -69,5 +69,14 @@ const LoginUser = async (req, res) => {
     }
 }
 
-module.exports = { createUser, UserVerified, getUserByEmail, getAllUsers, LoginUser };
+const GetUnverifiedUsers = async (req, res) => {
+    try {
+        const users = await Users.find({ isVerified: false });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+module.exports = { createUser, UserVerified, getUserByEmail, getAllUsers, LoginUser, GetUnverifiedUsers };
 
