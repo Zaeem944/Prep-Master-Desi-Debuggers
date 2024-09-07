@@ -33,18 +33,18 @@ const PurchaseTest = () => {
     fetchTests();
   }, []);
 
-  const handlePurchase = async (testId: string) => {
+  const handlePurchase = async (title: string) => {
     try {
-      const response = await fetch(`/api/purchaseTest/${testId}`, {
+      const response = await fetch(`http://localhost:8000/test/purchaseTest`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email }),
+        body: JSON.stringify({ email: email, title: title }),
       });
 
       if (response.ok) {
-        router.push('/TestPage');
+        router.push('/Student');
       } else {
         throw new Error('Failed to purchase test');
       }
@@ -65,7 +65,7 @@ const PurchaseTest = () => {
           <li key={test._id}>
             <h2>{test.title}</h2>
             <p>Price: ${test.price}</p>
-            <button onClick={() => handlePurchase(test._id)}>Purchase Test</button>
+            <button onClick={() => handlePurchase(test.title)}>Purchase Test</button>
           </li>
         ))}
       </ul>

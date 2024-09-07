@@ -8,22 +8,22 @@ const QuestionSchema = new Schema({
     op2: { type: String, required: true },
     op3: { type: String, required: true },
     op4: { type: String, required: true },
-    isCorrect: { type: String, required: true } // This will store the correct option (e.g., 'op1', 'op2', etc.)
+    isCorrect: { type: String, required: true } 
 });
 
 // Define Test Series Schema
 const TestSeriesSchema = new Schema({
     title: { type: String, required: true },
     isApproved: {type:Boolean, default: false},
-    questions: [QuestionSchema], // Array of questions
+    questions: [QuestionSchema], 
     reviews: {
         title: { type: String },
-        reviewValues: { type: Number, min: 1, max: 5 }, // Review value out of 5
-        comments: [{ type: String }] // Array of review comments
+        reviewValues: { type: Number, min: 1, max: 5 }, 
+        comments: [{ type: String }] 
     },
     price: {type: Number, required: true},
     teacherEmail: {type: String},
-    purchasedBy: [{ type: String }], // Array of names of people who purchased the test
+    purchasedBy: [{ type: String }], 
     attempted: [{ type: String }] 
 }, { timestamps: true });
 

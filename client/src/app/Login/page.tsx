@@ -64,14 +64,12 @@ const LoginPage: React.FC = () => {
     setNotificationDescription('You have successfully logged in!');
     setShowNotification(true);
 
-    if(userData.role ==='student'){
+    if(userData.role =='student'){
       router.push('/Student')
-    }
-
-    if (userData.role === 'teacher' && !userData.isVerified) {
-      router.push('/Teacher/NotVerified'); 
-    } else  {
-      router.push('/Teacher/IsVerified');
+    }else if (userData.role === 'teacher' && !userData.isVerified) {
+      router.push('/Teacher/NotVerified'); // Redirect to "NotVerified" page for teachers
+    } else {
+      router.push('/Teacher/IsVerified'); // Redirect to home or another default page
     }
   };
 

@@ -71,21 +71,21 @@ const checkPurchased = async (req, res) => {
 
 
 const purchaseTest = async (req, res) => {
-    const { testId } = req.query;
-    const { email } = req.body;
+    const { email, title } = req.body;
 
     try {
-        // Find the test series by ID and update the purchasedBy array
-        const updatedTestSeries = await TestSeries.findByIdAndUpdate(
-            testId,
-            { $addToSet: { purchasedBy: email } },
-            { new: true }
+        const updatedTestSeries = await TestSeries.findOneAndUpdate(
+            { title: title }, // Query to find the test series by title
+            { $addToSet: { purchasedBy: email } }, // Update operation to add email to purchasedBy
+            { new: true } // Return the updated document
         );
 
         if (!updatedTestSeries) {
             return res.status(404).json({ message: 'Test series not found' });
         }
 
+
+        
         res.status(200).json(updatedTestSeries);
     } catch (error) {
         console.error(error);
@@ -114,6 +114,29 @@ const approveTest = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: error.message });
     }
-}
+};
 
-module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest, approveTest};
+const getTestDetails = async (req, res) => {
+    const { title } = req.body;
+
+    if (!title) {
+        return res.status(400).json({ message: 'Title is required' });
+    }
+
+    try {
+        // Find the test series by title
+        const data = await TestSeries.findOne({ title: title });
+
+        if (!data) {
+            return res.status(404).json({ message: 'Test series not found' });
+        }
+
+        // Return the test series data
+        res.status(200).json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest, approveTest, getTestDetails};
