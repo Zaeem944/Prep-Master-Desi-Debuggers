@@ -12,7 +12,7 @@ const ExampleComponent: React.FC = () => {
   const { socket } = useSocket();
 
   const handleLogin = () => {
-    dispatch(login({ name: 'John Doe', role: 'Admin' }));
+    dispatch(login({ name: 'John Doe', role: 'Admin', isVerified: true }));
   };
 
   const handleLogout = () => {

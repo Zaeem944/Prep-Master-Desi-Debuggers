@@ -2,19 +2,22 @@ const Users = require('../models/UserModel');
 
 const createUser = async (req, res) => {
     const { id, name, email, password, role } = req.body;
-    
-    if (role === 'admin' || role === 'student') {
+    try {
+    let isVerified = false;
+    console.log(`data recieved: ${id} ${name} ${email} ${password} ${role}`);
+    if (role === 'student') {
         isVerified = true;
     } else if (role === 'teacher') {
         isVerified = false;
     } else {
         throw new Error('Invalid role');
     }
-    try {
-        const newUser = new Users({ id, name, email, password, role, isVerified });
-        await newUser.save();
-        res.status(201).json(newUser);
+    const newUser = new Users({ id, name, email, password, role, isVerified });
+    await newUser.save();
+    res.status(201).json(newUser);
+    console.log('User created successfully');
     } catch (error) {
+        console.log('Error creating user:', error.message);
         res.status(409).json({ message: error.message });
     }
 }

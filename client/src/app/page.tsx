@@ -9,7 +9,7 @@ const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [signupAs, setSignupAs] = useState('user');
+  const [signupAs, setSignupAs] = useState('student');
   const [Success, setSuccess] = useState(false);
   const [NotificationTitle, setNotificationTitle] = useState('');
   const [NotificationDescription, setNotificationDescription] = useState('');
@@ -44,7 +44,7 @@ const SignupPage: React.FC = () => {
 
     const id = Math.floor(Math.random() * 100000);
 
-    const reponse = await fetch('/https://localhost:8000/user/create', {
+    const response = await fetch('http://localhost:8000/user/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const SignupPage: React.FC = () => {
       body: JSON.stringify({ id, name, email, password, role: signupAs }),
     });
 
-    if (!reponse.ok) {
+    if (!response.ok) {
       setSuccess(false);
       setNotificationTitle('Error!');
       setNotificationDescription('Our server is down. Please try again later! or contact support');
@@ -66,6 +66,12 @@ const SignupPage: React.FC = () => {
     setNotificationTitle('Success!');
     setNotificationDescription('You have successfully signed up!');
     setShowNotification(true);
+
+    setName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setSignupAs('student');
   };
 
   return (
