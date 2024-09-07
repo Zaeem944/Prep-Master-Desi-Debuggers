@@ -62,9 +62,9 @@ const LoginPage: React.FC = () => {
     setShowNotification(true);
 
     if (userData.role === 'teacher' && !userData.isVerified) {
-      router.push('/NotVerified'); // Redirect to "NotVerified" page for teachers
+      router.push('/Teacher/NotVerified'); // Redirect to "NotVerified" page for teachers
     } else {
-      router.push('/IsVerified'); // Redirect to home or another default page
+      router.push('/Teacher/IsVerified'); // Redirect to home or another default page
     }
   };
 

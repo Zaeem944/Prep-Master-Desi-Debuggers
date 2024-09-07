@@ -14,6 +14,7 @@ const QuestionSchema = new Schema({
 // Define Test Series Schema
 const TestSeriesSchema = new Schema({
     title: { type: String, required: true },
+    isApproved: {type:Boolean, default: false},
     questions: [QuestionSchema], // Array of questions
     reviews: {
         title: { type: String },
