@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {   } = require('../controllers/TestSeriesController');
+const {  createTestSeries } = require('../controllers/TestSeriesController');
 
-
+router.post('/createTest', createTestSeries);
 
 
 module.exports = router;

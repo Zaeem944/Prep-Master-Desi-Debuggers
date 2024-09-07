@@ -16,10 +16,12 @@ const TestSeriesSchema = new Schema({
     title: { type: String, required: true },
     questions: [QuestionSchema], // Array of questions
     reviews: {
-        title: { type: String, required: true },
+        title: { type: String },
         reviewValues: { type: Number, min: 1, max: 5 }, // Review value out of 5
         comments: [{ type: String }] // Array of review comments
     },
+    price: {type: Number, required: true},
+    teacherEmail: {type: String},
     purchasedBy: { type: String, required: true } // String representing who purchased the test series
 }, { timestamps: true });
 
