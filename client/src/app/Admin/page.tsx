@@ -21,10 +21,10 @@ const AdminHome = () => {
   }
 
   return (
-    <div>
+    <div className='bg-gradient-to-br from-purple-500 to-indigo-600'>
 
-      <h1 className="text-3xl font-bold text-center">Admin Home</h1>
-      <div className="flex flex-row justify-around">
+      <h1 className="text-3xl font-bold text-center text-white">Welcome, {user.name}</h1>
+      <div className="flex flex-row justify-around ">
       <div className="flex flex-row space-x-12">
         <Link href="/Admin/VerifyTeachers">
           <p className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
@@ -38,7 +38,6 @@ const AdminHome = () => {
         </Link>
 
         </div>
-        {/* makw the logout button */}
           <button onClick={handleLogout} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
             Logout
           </button>

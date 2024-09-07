@@ -66,7 +66,7 @@ const dispatch = useDispatch();
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-gradient-to-br from-purple-500 to-indigo-600">
       <div className="flex justify-between items-center mb-4">
       <h1 className="text-2xl font-bold mb-4">Unapproved Tests</h1>
       <button

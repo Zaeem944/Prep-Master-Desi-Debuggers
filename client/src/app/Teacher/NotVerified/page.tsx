@@ -82,9 +82,9 @@ const CheckIsVerifiedPage = () => {
         />
 
 
-      <div>
+      <div className='bg-gradient-to-br from-purple-500 to-indigo-600'>
        <div className="flex justify-between items-center mb-4">
-      <h1 className="text-2xl font-bold mb-4">Awaiting Admin Approval</h1>
+      <h1 className="text-2xl font-bold mb-4 text-white">Welcome, {user.name}</h1>
       <button
         onClick={handleLogout}
         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"

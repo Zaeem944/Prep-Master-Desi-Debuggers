@@ -8,6 +8,7 @@ import LoginButton from '@/GlobalComponents/LoginButton';
 import Notification from '@/GlobalComponents/Notification';
 import { useRouter } from 'next/navigation'; // Use useRouter from next/navigation for Next.js routing
 import { useSocket } from '../SocketContext';
+import Link from 'next/link';
 
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -90,7 +91,7 @@ const LoginPage: React.FC = () => {
         />
       )}
 
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-500 to-indigo-600">
         <form
           onSubmit={handleLogin}
           className="w-full max-w-md bg-white p-8 rounded shadow-lg"
@@ -116,6 +117,13 @@ const LoginPage: React.FC = () => {
           {/* Login Button */}
           <div className="mt-4">
           <LoginButton text="Login" onClick={handleLogin} />
+          </div>
+
+          {/* Register Link */}
+          <div className="mt-4 text-center">
+            <Link href="/">
+              <p>Don't have an account? <span className="text-blue-500 hover:underline">Register here.</span></p>
+            </Link>
           </div>
         </form>
       </div>
