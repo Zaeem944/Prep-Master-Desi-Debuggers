@@ -55,5 +55,19 @@ const getAllUsers = async (req, res) => {
     }
 }
 
-module.exports = { createUser, UserVerified, getUserByEmail, getAllUsers };
+const LoginUser = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await Users.findOne({ email: email });
+        if (user.password === password) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ message: 'Invalid password' });
+        }
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+module.exports = { createUser, UserVerified, getUserByEmail, getAllUsers, LoginUser };
 
