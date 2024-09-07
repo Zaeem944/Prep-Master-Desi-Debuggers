@@ -52,7 +52,7 @@ const LoginPage: React.FC = () => {
     const userData = await response.json();
 
     // Dispatch login action
-    dispatch(login({ name: userData.name, role: userData.role, isVerified: true }));
+    dispatch(login({ name: userData.name, role: userData.role, isVerified: true , email: userData.email}));
 
     console.log(`User: ${userData.name} has logged in as a ${userData.role}`);
 
@@ -60,6 +60,10 @@ const LoginPage: React.FC = () => {
     setNotificationTitle('Success!');
     setNotificationDescription('You have successfully logged in!');
     setShowNotification(true);
+
+    if(userData.role ==='student'){
+      router.push('/Student')
+    }
 
     if (userData.role === 'teacher' && !userData.isVerified) {
       router.push('/Teacher/NotVerified'); // Redirect to "NotVerified" page for teachers

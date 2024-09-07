@@ -35,5 +35,62 @@ const sendUnapproved = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch unapproved test series' });
     }
 };
+const sendApproved = async (req, res) => {
+    try {
+        // Fetch all TestSeries documents where isApproved is false
+        const unapprovedTestSeries = await TestSeries.find({ isApproved: true });
+        
+        // Send the result back to the client
+        res.status(200).json(unapprovedTestSeries);
+    } catch (error) {
+        // Handle errors
+        console.error('Error fetching unapproved test series:', error);
+        res.status(500).json({ message: 'Failed to fetch unapproved test series' });
+    }
+};
 
-module.exports = { createTestSeries, sendUnapproved };
+const checkPurchased = async (req, res) => {
+    const { email } = req.body; // Extract the name from the request body
+
+    if (!email) {
+        return res.status(400).json({ message: 'Name is required' });
+    }
+
+    try {
+        // Query for TestSeries where purchasedBy contains the given name
+        const purchasedTestSeries = await TestSeries.find({ purchasedBy: email });
+        
+        // Send the result back to the client
+        res.status(200).json(purchasedTestSeries);
+    } catch (error) {
+        // Handle errors
+        console.error('Error fetching purchased test series:', error);
+        res.status(500).json({ message: 'Failed to fetch purchased test series' });
+    }
+};
+
+
+const purchaseTest = async (req, res) => {
+    const { testId } = req.query;
+    const { email } = req.body;
+
+    try {
+        // Find the test series by ID and update the purchasedBy array
+        const updatedTestSeries = await TestSeries.findByIdAndUpdate(
+            testId,
+            { $addToSet: { purchasedBy: email } },
+            { new: true }
+        );
+
+        if (!updatedTestSeries) {
+            return res.status(404).json({ message: 'Test series not found' });
+        }
+
+        res.status(200).json(updatedTestSeries);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest};
