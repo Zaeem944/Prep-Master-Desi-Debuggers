@@ -27,13 +27,13 @@ app.use(
 app.use(express.json());
 
 // MongoDB Connection (Uncomment and provide URI for use)
-// connectMongoDB(process.env.MONGO_URI);
+connectMongoDB(process.env.MONGO_URI);
 
 // Create HTTP server and initialize Socket.io
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000', // Replace with your frontend URL for development
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true,

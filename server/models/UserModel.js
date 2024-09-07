@@ -26,10 +26,6 @@ const UserSchema = new Schema({
         type: Boolean,
         required: true,
     },
-    imageUrl: {
-        type: String,
-        required: false,
-    },
 }, {timestamps: true});
 
 const Users = mongoose.model('Users', UserSchema);
