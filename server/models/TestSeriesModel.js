@@ -23,7 +23,8 @@ const TestSeriesSchema = new Schema({
     },
     price: {type: Number, required: true},
     teacherEmail: {type: String},
-    purchasedBy: { type: String, required: true } // String representing who purchased the test series
+    purchasedBy: [{ type: String }], // Array of names of people who purchased the test
+    attempted: [{ type: String }] 
 }, { timestamps: true });
 
 // Define the TestSeries model
