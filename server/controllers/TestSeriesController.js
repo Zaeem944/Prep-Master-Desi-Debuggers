@@ -131,8 +131,14 @@ const getTestDetails = async (req, res) => {
             return res.status(404).json({ message: 'Test series not found' });
         }
 
-        // Return the test series data
-        res.status(200).json(data);
+        // Map the necessary fields (title and reviews)
+        const result = {
+            title: data.title,
+            reviews: data.reviews
+        };
+
+        // Return the mapped data
+        res.status(200).json(result);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });

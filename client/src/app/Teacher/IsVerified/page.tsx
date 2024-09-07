@@ -43,7 +43,7 @@ const CreateTestSeriesPage = () => {
     };
 
     try {
-      const response = await fetch('/api/testSeries', {
+      const response = await fetch('http://localhost:8000/test/createTest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
