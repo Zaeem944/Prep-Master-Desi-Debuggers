@@ -55,7 +55,9 @@ const LoginPage: React.FC = () => {
     const userData = await response.json();
 
     // Dispatch login action
-    dispatch(login({ name: userData.name, role: userData.role, isVerified: true , email: userData.email}));
+    dispatch(login({ name: userData.name, role: userData.role, isVerified: userData.isVerified , email: userData.email}));
+
+    socket?.emit('login', userData);
 
     console.log(`User: ${userData.name} has logged in as a ${userData.role}, verified: ${userData.isVerified}`);
 
@@ -66,13 +68,14 @@ const LoginPage: React.FC = () => {
 
     if(userData.role ==='student'){
       router.push('/Student')
-    }
-
-    if (userData.role === 'teacher' && !userData.isVerified) {
+    } else if (userData.role === 'teacher' && !userData.isVerified) {
       router.push('/Teacher/NotVerified'); 
-    } else  {
+    } else if (userData.role === 'teacher' && userData.isVerified) {
       router.push('/Teacher/IsVerified');
+    } else if (userData.role === 'admin') {
+      router.push('/Admin');
     }
+    
   };
 
   return (
@@ -111,7 +114,9 @@ const LoginPage: React.FC = () => {
           />
 
           {/* Login Button */}
+          <div className="mt-4">
           <LoginButton text="Login" onClick={handleLogin} />
+          </div>
         </form>
       </div>
     </>

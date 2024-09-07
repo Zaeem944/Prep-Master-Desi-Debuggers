@@ -1,11 +1,30 @@
 "use client";
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/State/store';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
 
 const CreateTestSeriesPage = () => {
   const [title, setTitle] = useState('');
   const [questions, setQuestions] = useState([{ question: '', op1: '', op2: '', op3: '', op4: '', isCorrect: '' }]);
   const [price, setPrice] = useState(0);
   const [purchasedBy, setPurchasedBy] = useState('');
+  const dispatch = useDispatch();
+
+  const user = useSelector((state: RootState) => state.user);
+  const router = useRouter();
+  if (!user || !user.isLoggedIn) {
+    router.push('/Login');
+  }
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    router.push('/Login');
+    window.location.reload();
+  }
+
+
 
   // Handler to add a new empty question
   const addQuestion = () => {
@@ -50,7 +69,15 @@ const CreateTestSeriesPage = () => {
 
   return (
     <div>
-      <h1>Welcome Teacher</h1>
+      <div className="flex justify-between items-center mb-4">
+      <h1 className="text-2xl font-bold mb-4">Welcome, Teacher</h1>
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Logout
+      </button>
+      </div>
         <h2>Create New test Series</h2>
       <div>
         <label>Test Series Title:</label>

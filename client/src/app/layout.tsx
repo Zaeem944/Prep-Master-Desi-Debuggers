@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Devathon App",
-  description: "This is the metadata description for Devathon",
+  title: "Prep Master",
+  description: "World's 322nd best prep tool",
 };
 
 export default function RootLayout({

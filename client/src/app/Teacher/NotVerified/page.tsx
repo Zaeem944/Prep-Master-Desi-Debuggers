@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { RootState } from '@/State/store';
 import { useSocket } from '@/app/SocketContext';
 import Notification from '@/GlobalComponents/Notification';
+import { useDispatch } from 'react-redux';
 
 const CheckIsVerifiedPage = () => {
   const [loading, setLoading] = useState(true);
@@ -16,10 +17,23 @@ const CheckIsVerifiedPage = () => {
   const [notificationDescription, setNotificationDescription] = useState('');
   const [success, setSuccess] = useState(false);
 
-  // Get the user data from Redux store
-  const { isVerified } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    router.push('/Login');
+    window.location.reload();
+  };
+
+
+  // Get the user data from Redux store
+
+  const user = useSelector((state: RootState) => state.user);
+  if (!user || !user.isLoggedIn) {
+    router.push('/Login');
+  }
   
+  console.log(`in NotVerified page, user: ${JSON.stringify(user)}`);
 
   useEffect(() => {
     // Simulate a loading delay if needed
@@ -29,19 +43,21 @@ const CheckIsVerifiedPage = () => {
 
   useEffect(() => {
     // If the user is verified, redirect to the Create Test Series page
-    if (!loading && isVerified) {
+    if (!loading && user.isVerified) {
       router.push('/Teacher/IsVerified');
     }
-  }, [isVerified, loading, router]);
+  }, [user, loading, router]);
 
   useEffect(() => {
     if (!socket) return; // Ensure socket is initialized
 
     const handleTeacherVerified = (teacherEmail: string) => {
+
       setSuccess(true);
       setNotificationTitle('Success!');
       setNotificationDescription(`${teacherEmail} has been verified.`);
       setShowNotification(true);
+      router.push('/Teacher/IsVerified');
     };
 
     // Set up socket event listener
@@ -55,7 +71,7 @@ const CheckIsVerifiedPage = () => {
   }
 
   // If not verified, show a message
-  if (!isVerified) {
+  if (!user.isVerified) {
     return (
         <>
         <Notification
@@ -67,7 +83,15 @@ const CheckIsVerifiedPage = () => {
 
 
       <div>
-        <h1>Await Admin Approval</h1>
+       <div className="flex justify-between items-center mb-4">
+      <h1 className="text-2xl font-bold mb-4">Awaiting Admin Approval</h1>
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Logout
+      </button>
+      </div>
         <p>Your account is currently not verified. Please await approval from the admin.</p>
       </div>
       </>

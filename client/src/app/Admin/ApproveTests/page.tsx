@@ -1,10 +1,30 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useSocket } from '@/app/SocketContext';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/State/store';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+
 
 const ApproveTests: React.FC = () => {
   const [tests, setTests] = useState<any[]>([]); // Use an appropriate type for tests
   const { socket } = useSocket();
+const dispatch = useDispatch();
+
+  const user = useSelector((state: RootState) => state.user);
+  const router = useRouter();
+  if (!user || !user.isLoggedIn) {
+    router.push('/Login');
+  }
+
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    router.push('/Login');
+    window.location.reload();
+  }
+
 
   useEffect(() => {
     const fetchUnapproved = async () => {
@@ -40,7 +60,6 @@ const ApproveTests: React.FC = () => {
     if (response.ok) {
       // Optionally, update the UI or refetch the list
       console.log('Test Approved verified successfully');
-      window.location.reload();
     } else {
       console.log('Error approving test');
     }
@@ -48,7 +67,15 @@ const ApproveTests: React.FC = () => {
 
   return (
     <div className="p-4">
+      <div className="flex justify-between items-center mb-4">
       <h1 className="text-2xl font-bold mb-4">Unapproved Tests</h1>
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Logout
+      </button>
+      </div>
       <ul className="space-y-4">
         {tests.map((test) => (
           <li key={test.title} className="flex items-center justify-between p-4 border rounded shadow-md">

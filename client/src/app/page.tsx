@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import InputField from '@/GlobalComponents/InputField';
 import LoginButton from '@/GlobalComponents/LoginButton';
 import Notification from '@/GlobalComponents/Notification';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const SignupPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -14,6 +16,8 @@ const SignupPage: React.FC = () => {
   const [NotificationTitle, setNotificationTitle] = useState('');
   const [NotificationDescription, setNotificationDescription] = useState('');
   const [ShowNotification, setShowNotification] = useState(false);
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,6 +70,7 @@ const SignupPage: React.FC = () => {
     setNotificationTitle('Success!');
     setNotificationDescription('You have successfully signed up!');
     setShowNotification(true);
+    router.push('/Login');
 
     setName('');
     setEmail('');
@@ -140,7 +145,6 @@ const SignupPage: React.FC = () => {
             required
           >
             <option value="student">Student</option>
-            <option value="admin">Admin</option>
             <option value="teacher">Teacher</option>
           </select>
         </div>
@@ -148,6 +152,12 @@ const SignupPage: React.FC = () => {
         {/* Submit Button */}
         <LoginButton text="Sign Up" onClick={handleSubmit}
         />
+
+        <div className="text-center mt-4">
+          <Link href="/Login">
+            <p >Already have an account? <span className="text-blue-500">Login</span></p>
+          </Link>
+        </div>
         
       </form>
 
