@@ -10,7 +10,7 @@ const AdminHome = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const router = useRouter();
-  const [Tests, setTests] = useState<any[]>([]); // Change to 'any[]' to handle data structure
+  const [Tests, setTests] = useState<any[]>([]);
 
   if (!user || !user.isLoggedIn) {
     router.push('/Login');
@@ -23,7 +23,7 @@ const AdminHome = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title: 'Advanced Physics' }) // Optionally pass a specific title if needed
+        body: JSON.stringify({ title: 'Advanced Physics' }) // Specific test series title
       });
 
       if (!response.ok) {
@@ -32,8 +32,10 @@ const AdminHome = () => {
       }
 
       const data = await response.json();
-      setTests(data); // Assuming this is an array of test data
-      console.log(data);
+      
+      // Since `data` is likely a single object, wrap it in an array
+      setTests([data]);  // Wrapping data in an array to ensure it is processed correctly
+      console.log('Fetched Data:', data);
     };
 
     fetchTests();
