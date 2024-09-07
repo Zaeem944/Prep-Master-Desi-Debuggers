@@ -91,7 +91,9 @@ const LoginPage: React.FC = () => {
         />
       )}
 
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-500 to-indigo-600">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-500 to-indigo-600">
+      <h1 className="text-3xl font-bold text-center text-white my-4">welcome to Prep Master</h1>
+      <h2 className="text-2xl font-bold text-center text-white my-4">World's 322nd Best Test Prep Website</h2>
         <form
           onSubmit={handleLogin}
           className="w-full max-w-md bg-white p-8 rounded shadow-lg"
