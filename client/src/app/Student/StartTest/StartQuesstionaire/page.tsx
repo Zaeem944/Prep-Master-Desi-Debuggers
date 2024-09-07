@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { RootState } from '@/State/store';
 import { useSelector } from 'react-redux';
@@ -10,13 +10,11 @@ const StartQuestionnaire = () => {
     const [test, setTest] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [answers, setAnswers] = useState<{ [questionId: string]: string }>({});
+    const [score, setScore] = useState(0);
     const router = useRouter();
     const { email } = useSelector((state: RootState) => state.user);
-    const searchParams = useSearchParams()
-
+    const searchParams = useSearchParams();
     const title = searchParams.get("title");
-
-    console.log(title);
 
     useEffect(() => {
         const fetchTestDetails = async () => {
@@ -54,14 +52,27 @@ const StartQuestionnaire = () => {
         }));
     };
 
+    const calculateScore = () => {
+        let totalScore = 0;
+        test.questions.forEach((question: any) => {
+            if (answers[question._id] === question.isCorrect) {
+                totalScore += 1;
+            }
+        });
+        return totalScore;
+    };
+
     const handleSubmit = async () => {
+        const finalScore = calculateScore();
+        setScore(finalScore);
+
         try {
             const response = await fetch(`http://localhost:8000/test/submitTest`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ title: test.title, email: email }),
+                body: JSON.stringify({ title: test.title, email: email, highestMarks: finalScore }),
             });
 
             if (response.ok) {

@@ -139,4 +139,54 @@ const getTestDetails = async (req, res) => {
     }
 };
 
-module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest, approveTest, getTestDetails};
+
+const submitTest = async (req, res) => {
+    try {
+        const { title, attempted } = req.body;
+        
+        const updatedTest = await TestSeries.findOneAndUpdate(
+            { title: title },
+            { 
+                $push: { attempted: attempted }
+            },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedTest) {
+            return res.status(404).json({ message: "Test not found" });
+        }
+
+        res.status(200).json(updatedTest);
+    } catch (error) {
+        console.error('Error submitting test:', error);
+        res.status(500).json({ message: "Error submitting test", error: error.message });
+    }
+};
+
+
+const addReview = async (req, res) => {
+    const { title, review } = req.body; // Extract title and review from the request body
+
+    if (!title || !review) {
+        return res.status(400).json({ message: 'Title and review are required' });
+    }
+
+    try {
+        const updatedTestSeries = await TestSeries.findOneAndUpdate(
+            { title: title }, // Query to find the test series by title
+            { $push: { reviews: review } }, // Add the new review to the reviews array
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedTestSeries) {
+            return res.status(404).json({ message: 'Test series not found' });
+        }
+
+        res.status(200).json(updatedTestSeries);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest, approveTest, getTestDetails, submitTest, addReview};

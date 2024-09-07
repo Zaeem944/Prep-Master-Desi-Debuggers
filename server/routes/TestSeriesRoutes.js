@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {  createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest, approveTest, getTestDetails } = require('../controllers/TestSeriesController');
+const {  createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest, approveTest, getTestDetails , submitTest, addReview} = require('../controllers/TestSeriesController');
 
 router.post('/createTest', createTestSeries);
 
@@ -15,5 +15,9 @@ router.post('/purchaseTest', purchaseTest);
 router.put('/approveTest/:title', approveTest);
 
 router.post('/getTestDetails', getTestDetails);
+
+router.post('/submitTest', submitTest);
+
+router.post('/addReview', addReview);
 
 module.exports = router;
