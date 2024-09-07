@@ -68,4 +68,29 @@ const checkPurchased = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch purchased test series' });
     }
 };
-module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased};
+
+
+const purchaseTest = async (req, res) => {
+    const { testId } = req.query;
+    const { email } = req.body;
+
+    try {
+        // Find the test series by ID and update the purchasedBy array
+        const updatedTestSeries = await TestSeries.findByIdAndUpdate(
+            testId,
+            { $addToSet: { purchasedBy: email } },
+            { new: true }
+        );
+
+        if (!updatedTestSeries) {
+            return res.status(404).json({ message: 'Test series not found' });
+        }
+
+        res.status(200).json(updatedTestSeries);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest};
