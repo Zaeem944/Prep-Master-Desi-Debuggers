@@ -93,4 +93,27 @@ const purchaseTest = async (req, res) => {
     }
 };
 
-module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest};
+const approveTest = async (req, res) => {
+    console.log("req is: ", req.params);
+    const { title } = req.params;
+
+    try {
+        // Find the test series by ID and update the isApproved field
+        console.log("title", title);
+        const updatedTestSeries = await TestSeries.findOne({ title: title });
+        if (!updatedTestSeries) {
+            return res.status(404).json({ message: 'Test series not found' });
+        }
+
+        updatedTestSeries.isApproved = true;
+        await updatedTestSeries.save();
+
+        
+        res.status(200).json(updatedTestSeries);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports = { createTestSeries, sendUnapproved , sendApproved, checkPurchased, purchaseTest, approveTest};

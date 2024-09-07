@@ -7,7 +7,7 @@ const ApproveTests: React.FC = () => {
   const { socket } = useSocket();
 
   useEffect(() => {
-    const fetchTeachers = async () => {
+    const fetchUnapproved = async () => {
       const response = await fetch('http://localhost:8000/test/sendUnApproved', {
         method: 'GET',
         headers: {
@@ -25,12 +25,12 @@ const ApproveTests: React.FC = () => {
       console.log(data);
     };
 
-    fetchTeachers();
+    fetchUnapproved();
   }, []);
 
-  const handleVerify = async (teacherEmail: string) => {
+  const handleApprove = async (title: string) => {
     // Perform verification logic here
-    const response = await fetch(`http://localhost:8000/user/verify/${teacherEmail}`, {
+    const response = await fetch(`http://localhost:8000/test/approveTest/${title}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -39,30 +39,28 @@ const ApproveTests: React.FC = () => {
 
     if (response.ok) {
       // Optionally, update the UI or refetch the list
-      setTests(tests.filter(teacher => teacher.id !== teacherEmail));
-      socket?.emit('teacherVerified', teacherEmail);
-      console.log('Teacher verified successfully');
+      console.log('Test Approved verified successfully');
       window.location.reload();
     } else {
-      console.log('Error verifying teacher');
+      console.log('Error approving test');
     }
   };
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Unverified Teachers</h1>
+      <h1 className="text-2xl font-bold mb-4">Unapproved Tests</h1>
       <ul className="space-y-4">
-        {tests.map((teacher) => (
-          <li key={teacher.id} className="flex items-center justify-between p-4 border rounded shadow-md">
+        {tests.map((test) => (
+          <li key={test.title} className="flex items-center justify-between p-4 border rounded shadow-md">
             <div>
-              <p className="font-semibold">{teacher.name}</p>
-              <p className="text-gray-600">{teacher.email}</p>
+              <p className="font-semibold">{test.title }</p>
+              <p className="text-gray-600">{test.teacherEmail}</p>
             </div>
             <button
-              onClick={() => handleVerify(teacher.email)}
+              onClick={() => handleApprove(test.title)}
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
-              Verify
+              Approve
             </button>
           </li>
         ))}
