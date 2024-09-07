@@ -1,8 +1,10 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useSocket } from '@/app/SocketContext';
 
 const VerifyTeachers: React.FC = () => {
   const [teachers, setTeachers] = useState<any[]>([]); // Use an appropriate type for teachers
+  const { socket } = useSocket();
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -38,6 +40,7 @@ const VerifyTeachers: React.FC = () => {
     if (response.ok) {
       // Optionally, update the UI or refetch the list
       setTeachers(teachers.filter(teacher => teacher.id !== teacherEmail));
+      socket?.emit('teacherVerified', teacherEmail);
       console.log('Teacher verified successfully');
       window.location.reload();
     } else {

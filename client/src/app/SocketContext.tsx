@@ -12,11 +12,11 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    //const socketInstance = io('resources-for-hackathon.vercel.app');
     const socketInstance = io('http://localhost:8000'); // Ensure this matches backend server
     setSocket(socketInstance);
 
     console.log(`socket instance is: ${socketInstance}`);
+
 
     return () => {
       socketInstance.disconnect();
@@ -37,3 +37,4 @@ export const useSocket = (): SocketContextType => {
   }
   return context;
 };
+

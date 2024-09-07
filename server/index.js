@@ -39,13 +39,40 @@ const io = new Server(server, {
   },
 });
 
+//GlobalObject for storing emails and their respective socket ids
+
+global.userSocketMap = {};
+
 // Socket.io Connection
 io.on('connection', (socket) => {
-  let id = Math.floor(Math.random() * 100000);
-  console.log(`User with id ${id} connected`);
+  console.log(`User with id ${socket.id} connected`);
+
+
+  socket.on('login', (userData) => {
+    console.log("Socket Email Received")
+    global.userSocketMap[socket.id] = userData;
+    console.log("global map is: ", global.userSocketMap);
+  });
+
+  socket.on('teacherVerified', (email) => {
+    
+    console.log("Teacher Verified: ", email);
+    const socketId = Object.keys(global.userSocketMap).find(
+      (key) => global.userSocketMap[key].email === email
+    );
+    console.log("Keys is: ", Object.keys(global.userSocketMap));
+    console.log("Values is: ", Object.values(global.userSocketMap));
+    console.log("Socket Id is: ", socketId);
+    io.to(socketId).emit('teacherVerified', email);
+  });
 
   socket.on('disconnect', () => {
-    console.log(`User with id ${id} disconnected`);
+    console.log(`User with id ${socket.id} disconnected`);
+    global.userSocketMap = Object.fromEntries(
+      Object.entries(global.userSocketMap).filter(
+        ([key, value]) => key !== socket.id
+      )
+    );
   });
 });
 

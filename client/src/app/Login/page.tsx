@@ -7,11 +7,14 @@ import InputField from '@/GlobalComponents/InputField'; // Ensure this component
 import LoginButton from '@/GlobalComponents/LoginButton';
 import Notification from '@/GlobalComponents/Notification';
 import { useRouter } from 'next/navigation'; // Use useRouter from next/navigation for Next.js routing
+import { useSocket } from '../SocketContext';
 
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const router = useRouter();
+  const { socket } = useSocket();
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,7 +57,7 @@ const LoginPage: React.FC = () => {
     // Dispatch login action
     dispatch(login({ name: userData.name, role: userData.role, isVerified: true , email: userData.email}));
 
-    console.log(`User: ${userData.name} has logged in as a ${userData.role}`);
+    console.log(`User: ${userData.name} has logged in as a ${userData.role}, verified: ${userData.isVerified}`);
 
     setSuccess(true);
     setNotificationTitle('Success!');
@@ -66,9 +69,9 @@ const LoginPage: React.FC = () => {
     }
 
     if (userData.role === 'teacher' && !userData.isVerified) {
-      router.push('/Teacher/NotVerified'); // Redirect to "NotVerified" page for teachers
-    } else {
-      router.push('/Teacher/IsVerified'); // Redirect to home or another default page
+      router.push('/Teacher/NotVerified'); 
+    } else  {
+      router.push('/Teacher/IsVerified');
     }
   };
 
