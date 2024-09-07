@@ -4,15 +4,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/State/store';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const AdminHome = () => {
 
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const router = useRouter();
+  const [Tests, setTests] = useState([]);
+
   if (!user || !user.isLoggedIn) {
     router.push('/Login');
   }
+
+  useEffect(() => {
+
+    const fetchTests = async () => {
+      const response = await fetch('http://localhost:8000/test/getTestDetails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        console.log('Error fetching tests');
+        return;
+      }
+
+      const data = await response.json();
+      setTests(data);
+      console.log(data);
+    };
+
+    fetchTests();
+
+
+  }, [])
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
