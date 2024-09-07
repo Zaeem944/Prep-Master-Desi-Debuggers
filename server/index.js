@@ -7,6 +7,7 @@ const http = require('http');
 
 // Importing Routes:
 const UserRouter = require('./routes/UserRoutes');
+const TestSeriesRouter = require('./routes/TestSeriesRoutes');
 
 // Load environment variables:
 dotenv.config();
@@ -55,6 +56,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', UserRouter);
+app.use('/test', TestSeriesRouter);
 
 // Start server with `server.listen`, not `app.listen`
 server.listen(PORT, () => {
